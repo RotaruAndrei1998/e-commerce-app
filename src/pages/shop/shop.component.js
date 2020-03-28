@@ -4,9 +4,9 @@ import CollectionPreview from '../../components/preview-collection/preview-colle
 
 import SHOP_DATA from './shop.data';
 
-const Shop = (props) => {
+const Shop = () => {
 
-    const [collections, setCollections] = useState(SHOP_DATA);
+    const [collections] = useState(SHOP_DATA);
 
     return (
         <div className='shop-page'>
