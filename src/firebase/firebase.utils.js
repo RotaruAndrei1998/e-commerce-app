@@ -23,11 +23,9 @@ export const createUserProfileDocument = async (user, additionalData) => {
    const { displayName, email } = user;
    const createdAt = new Date();
  
-   try {
-   await userRef.set({displayName, email, createdAt, ...additionalData});
-   } catch(error) {
-     console.log('error creating user: ', error.message);
-   } 
+  userRef.set({displayName, email, createdAt, ...additionalData})
+  .catch(error => console.log('error creating user: ', error.message));
+  
   }
 
   return userRef;
