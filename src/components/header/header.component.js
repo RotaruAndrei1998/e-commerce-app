@@ -1,13 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { ReactComponent as Logo } from '../../assets/crown.svg'
 
 import './header.styles.scss';
 import { auth } from '../../firebase/firebase.utils';
+import CartItem from '../cart-item/cart-item.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
-const Header = ({ currentUser, signOut }) => (
+const Header = ({ currentUser, toggleDropdown, signOut, history }) => (
 <div className='header'>
     <Link className='logo-container' to='/'>
          <Logo className='logo'/>
@@ -20,18 +22,22 @@ const Header = ({ currentUser, signOut }) => (
             CONTACT
         </Link>
         {currentUser ? 
-            <Link className='option' to='/signin' onClick={() => {
+            <Link className='option' onClick={async () => {
                 auth.signOut();
-                signOut();
+                await signOut();
+                history.push('/signin');
             }}> SIGN OUT</Link>:
               <Link className='option' to='/signin'>
             SIGN IN
         </Link>}
-    </div>
+        <CartItem/>
+        </div>
+        {!toggleDropdown && <CartDropdown/>}
 </div>
 );
 
 const mapStateToProps = state => ({
     currentUser: state.user.currentUser,
+    toggleDropdown: state.cart.hidden,
 })
-export default connect(mapStateToProps)(Header); 
+export default connect(mapStateToProps)(withRouter(Header)); 
